@@ -106,7 +106,7 @@ class treeFrame extends JFrame implements ActionListener {
     private void addChild(DefaultMutableTreeNode node, String name) {
         var id = node.isRoot() || node.getUserObject() instanceof String ? 0 : ((Category) node.getUserObject()).getId();
         if (id == 0 && !node.isRoot()) {
-            JOptionPane.showMessageDialog(this, "不能一次性添加连续的两个子节点！", "提示", JOptionPane.WARNING_MESSAGE);
+            showWarningDialog("不能一次性添加连续的两个子节点！");
             return;
         }
         node.add(new DefaultMutableTreeNode(name));
@@ -145,11 +145,11 @@ class treeFrame extends JFrame implements ActionListener {
         if (e.getSource() == btn1) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
             if (node == null) {
-                JOptionPane.showMessageDialog(this, "未选中任何节点！", "提示", JOptionPane.WARNING_MESSAGE);
+                showWarningDialog("未选中任何节点！");
                 return;
             }
             if (node.isRoot()) {
-                JOptionPane.showMessageDialog(this, "不能向根节点添加兄弟节点！", "提示", JOptionPane.WARNING_MESSAGE);
+                showWarningDialog("不能向根节点添加兄弟节点！");
                 return;
             }
             String input = JOptionPane.showInputDialog("请输入节点名称:");
@@ -160,7 +160,7 @@ class treeFrame extends JFrame implements ActionListener {
         } else if (e.getSource() == btn2) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
             if (node == null) {
-                JOptionPane.showMessageDialog(this, "未选中任何节点！", "提示", JOptionPane.WARNING_MESSAGE);
+                showWarningDialog("未选中任何节点！");
                 return;
             }
             String input = JOptionPane.showInputDialog("请输入节点名称:");
@@ -171,22 +171,22 @@ class treeFrame extends JFrame implements ActionListener {
         } else if (e.getSource() == btn3) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
             if (node == null) {
-                JOptionPane.showMessageDialog(this, "未选中任何节点！", "提示", JOptionPane.WARNING_MESSAGE);
+                showWarningDialog("未选中任何节点！");
                 return;
             }
             if (node.isRoot()) {
-                JOptionPane.showMessageDialog(this, "不能删除根节点！", "提示", JOptionPane.WARNING_MESSAGE);
+                showWarningDialog("不能删除根节点！");
                 return;
             }
             removeNode(node);
         } else if (e.getSource() == btn4) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
             if (node == null) {
-                JOptionPane.showMessageDialog(this, "未选中任何节点！", "提示", JOptionPane.WARNING_MESSAGE);
+                showWarningDialog("未选中任何节点！");
                 return;
             }
             if (node.isRoot()) {
-                JOptionPane.showMessageDialog(this, "不能编辑根节点！", "提示", JOptionPane.WARNING_MESSAGE);
+                showWarningDialog("不能编辑根节点！");
                 return;
             }
             String input = JOptionPane.showInputDialog("请输入节点名称:");
@@ -197,14 +197,14 @@ class treeFrame extends JFrame implements ActionListener {
 
         } else if (e.getSource() == btn5) {
             if (sb.length() == 0) {
-                JOptionPane.showMessageDialog(this, "没有需要保存的数据！", "提示", JOptionPane.WARNING_MESSAGE);
+                showWarningDialog("没有需要保存的数据！");
                 return;
             }
             var baseDao = new BaseDao();
             try {
                 baseDao.executeSql(sb.toString(), sqlObjs.toArray());
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "保存失败！", "提示", JOptionPane.WARNING_MESSAGE);
+                showWarningDialog("保存失败！");
                 ex.printStackTrace();
             }
             JOptionPane.showMessageDialog(this, "保存成功！");
@@ -215,5 +215,9 @@ class treeFrame extends JFrame implements ActionListener {
             tree.setModel(treeModel);
             tree.updateUI();
         }
+    }
+
+    private void showWarningDialog(String message) {
+        JOptionPane.showMessageDialog(this, message, "提示", JOptionPane.WARNING_MESSAGE);
     }
 }
