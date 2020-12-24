@@ -65,6 +65,7 @@ class treeFrame extends JFrame implements ActionListener {
         this.setLocationRelativeTo(null);
         this.setSize(600, 400);
         this.setVisible(true);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     private DefaultTreeModel getTreeModel() {
