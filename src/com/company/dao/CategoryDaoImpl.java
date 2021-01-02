@@ -12,12 +12,11 @@ import java.util.List;
 public class CategoryDaoImpl implements CategoryDao {
     @Override
     public List<Category> findAllCategories() {
-        Connection conn = BaseDao.getConnection();
         String sql = "select * from KIND";
         List<Category> categories = new ArrayList<>();
-        try {
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery();
+        try (Connection conn = BaseDao.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Category pet = new Category(
                         rs.getInt("id"),
@@ -26,7 +25,6 @@ public class CategoryDaoImpl implements CategoryDao {
                 );
                 categories.add(pet);
             }
-            BaseDao.closeAll(conn, stmt, rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
